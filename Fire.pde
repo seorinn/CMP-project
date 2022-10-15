@@ -25,13 +25,13 @@ class Fire {
     image(img, posX, posY, power, 1.5*power);
   }
 
-  boolean comparePos(float a, float b) {
-    if (abs(posX - a) < power && abs(posY - b) < power) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  //boolean comparePos(float a, float b) {
+  //  if (abs(posX - a) < power && abs(posY - b) < power) {
+  //    return true;
+  //  } else {
+  //    return false;
+  //  }
+  //}
 
   void reposition(float x, float y, int p) {
     posX = x + int(random(-5, 5)) * 30;
