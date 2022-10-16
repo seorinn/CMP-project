@@ -12,7 +12,7 @@ class Fire {
   }
 
   void hit() {
-    if (power > 0){
+    if (power > 0) {
       posY += 0.75*power;
       power -= 20;
       posY -= 0.75*power;
@@ -22,19 +22,12 @@ class Fire {
   }
 
   void drawFires(Gif img) {
-    image(img, posX, posY, power, 1.5*power);
+    if (show)
+      image(img, posX, posY, power, 1.5*power);
   }
 
-  //boolean comparePos(float a, float b) {
-  //  if (abs(posX - a) < power && abs(posY - b) < power) {
-  //    return true;
-  //  } else {
-  //    return false;
-  //  }
-  //}
-
   void reposition(float x, float y, int p) {
-    posX = x + int(random(-5, 5)) * 30;
+    posX = abs(x + int(random(-5, 5)) * 30);
     posY = y + 0.75*(p - power);
   }
 
