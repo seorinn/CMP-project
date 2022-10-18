@@ -33,17 +33,16 @@ void draw() {
       dp.goMedicineRoom();
     }
   } else if (fp != null) {
-    //fp.num = 0;
-    //fp.t += 0.1;
-    //fp.time += 0.1;
-
-    if (fp.playing) {
-      fp.playing(fireGif);
-    } else if (fp.missionFailed) {
+    println(fp.playing, fp.pause, fp.missionFailed, fp.missionClear);
+    if (fp.playing)
+    fp.playing(fireGif);
+    else if (fp.missionFailed)
       fp.missionFailed();
-    } else if (fp.missionClear) {
+    else if (fp.missionClear)
       fp.missionClear();
-    }
+    textSize(30);
+    textAlign(RIGHT);
+    text("h = home", width-10, height-50);
   }
   //else if (pp != null) {
   //} else if (cp != null) {
@@ -106,30 +105,43 @@ void keyPressed() {
       dp = null;
     }
   } else if (fp != null) {
-    if (fp.playing) {
-      if (key == 'e' && (fp.floor == 3 || fp.num == 0)) { //소방관 <-> 소방차
-        if (fp.mouseImg == fp.firefighterImg) {
-          fp.mouseImg = fp.fireEngineImg;
-        } else {
-          fp.mouseImg = fp.firefighterImg;
-        }
+    if (key == 'e' && (fp.floor == 3 || fp.missionFailed || fp.missionClear)) { //소방관 <-> 소방차
+      if (fp.mouseImg == fp.firefighterImg)
+        fp.mouseImg = fp.fireEngineImg;
+      else
+        fp.mouseImg = fp.firefighterImg;
+    }
+    if (key=='w' && fp.playing && fp.mouseImg == fp.firefighterImg) { //위층 이동(소방관)
+      if (fp.floor > 1)
+        fp.floor -= 1;
+    }
+    if (key=='s' && fp.playing && fp.mouseImg == fp.firefighterImg) { //아래층 이동(소방관)
+      if (fp.floor < 3)
+        fp.floor += 1;
+    }
+    if (key == ' ' && (fp.pause || fp.playing) ) {
+      if (!fp.pause) {
+        fp.pause = true;
+        fp.playing = false;
+        image(fp.pauseImg, 0, 0);
+      } else {
+        fp.pause = false;
+        fp.playing = true;
       }
-      if (key=='w' && fp.mouseImg == fp.firefighterImg) { //위층 이동(소방관)
-        if (fp.floor > 1)
-          fp.floor -= 1;
-      }
-      if (key=='s' && fp.mouseImg == fp.firefighterImg) { //아래층 이동(소방관)
-        if (fp.floor < 3)
-          fp.floor += 1;
-      }
+    } else if (key == 'a' && (fp.missionFailed || fp.missionClear)) {
+      fp = null;
+      fp = new FirefighterPage();
+      fp.setFire();
+      fp.playing(fireGif);
     }
     if (key == 'h') {
       home();
       fp = null;
     }
+
+    //else if(pp != null){}
+    //else if(cp != null){}
   }
-  //else if(pp != null){}
-  //else if(cp != null){}
 }
 
 void mousePressed() {
@@ -180,15 +192,17 @@ void mousePressed() {
         noStroke();
         fill(135, 206, 235);
         rect(mouseX, 50 + 150*fp.floor+ 115/2 - 5, 500, 10);
-        if (abs(fp.fires[i].posY - (50 + 150 * fp.floor)) < fp.fires[i].power && fp.fires[i].posX > mouseX-250 && fp.fires[i].posX < mouseX+250)
+        if (abs(fp.fires[i].posY - (50 + 150 * fp.floor)) < fp.fires[i].power && fp.fires[i].posX > mouseX-250 && fp.fires[i].posX < mouseX+250) {
           fp.fires[i].hit();
-        fp.score += 50;
+          fp.score += 50;
+        }
       }
     }
     frameRate(10);
     image(fp.waterImg, mouseX - 215/2, 50 + 150*fp.floor - 115/2, 215, 115);
     image(fp.mouseImg, mouseX - 215/2, 50 + 150*fp.floor -115/2, 215, 115);
+
+    //else if(pp != null){}
+    //else if(cp != null){}
   }
-  //else if(pp != null){}
-  //else if(cp != null){}
 }

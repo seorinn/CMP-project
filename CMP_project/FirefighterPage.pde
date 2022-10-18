@@ -1,4 +1,4 @@
-import gifAnimation.*;
+//import gifAnimation.*;
 
 class FirefighterPage {
   PImage backgroundImg = loadImage("background2.jpeg");
@@ -8,6 +8,7 @@ class FirefighterPage {
   PImage waterImg = loadImage("water.png");
   PImage fireEngineImg = loadImage("fireEngine.png");
   PImage cloudImg = loadImage("cloud.png");
+  PImage pauseImg = loadImage("pause.png");
   PImage mouseImg = firefighterImg;
 
   Fire[] fires = new Fire[100];
@@ -21,9 +22,7 @@ class FirefighterPage {
   float playTime = 60; // 게임 시간
   int score = 500;
 
-  boolean playing = false;
-  boolean missionFailed = false;
-  boolean missionClear = false;
+  boolean playing, pause, missionFailed, missionClear;
 
   void setFire() {
     for (int i = 0; i < fires.length; i++)
@@ -37,9 +36,6 @@ class FirefighterPage {
     num = 0;
     t += 0.1;
     time += 0.1;
-
-    //for (int i = 0; i < fires.length; i++)
-    //  fires[i] = new Fire();
 
     for (int i = 0; i < j; i++)  //초기 불
       fires[i].setShow();
@@ -56,6 +52,11 @@ class FirefighterPage {
       missionClear();
     }
 
+    image(cloudImg, x, 0); //구름 이동
+    x -= 1;
+    if (x < -width)
+      x = width;
+
     for (int i = 0; i < fires.length; i++) {
       fires[i].drawFires(img);
       if (fires[i].show && fires[i].power > 0 && t > 3) { //안꺼진 불 존재, 일정 시간 지남, show = false인 array 칸 존재
@@ -71,11 +72,15 @@ class FirefighterPage {
         j++;
       }
     }
+    if (floor == 1)                                                //마우스로 캐릭터 이동
+      image(mouseImg, mouseX-215/2, 50 + 150*floor-115/2, 215, 115);
+    else if (floor == 2)
+      image(mouseImg, mouseX-215/2, 50 + 150*floor-115/2, 215, 115);
+    else if (floor == 3)
+      image(mouseImg, mouseX-215/2, 50 + 150*floor-115/2, 215, 115);
 
-    image(cloudImg, x, 0); //구름 이동
-    x -= 1;
-    if (x < -width)
-      x = width;
+    textSize(30);
+    text("spacebar = pause", width-10, height-100);
 
     fill(0);
     textSize(20);        //점수, 시간 등 표기
@@ -86,13 +91,6 @@ class FirefighterPage {
     text("SCORE: " + score, width-10, 50);
     textAlign(LEFT);
     text("TIME: " + nf((playTime - time), 0, 1), 10, 50);
-
-    if (floor == 1)                                                //마우스로 캐릭터 이동
-      image(mouseImg, mouseX-215/2, 50 + 150*floor-115/2, 215, 115);
-    else if (floor == 2)
-      image(mouseImg, mouseX-215/2, 50 + 150*floor-115/2, 215, 115);
-    else if (floor == 3)
-      image(mouseImg, mouseX-215/2, 50 + 150*floor-115/2, 215, 115);
   }
 
   void missionFailed() {
@@ -104,6 +102,9 @@ class FirefighterPage {
     x -= 1;
     if (x < -width)
       x = width;
+    textSize(30);
+    textAlign(RIGHT);
+    text("a = play again", width-10, height-100);
   }
 
   void missionClear() {
@@ -118,5 +119,8 @@ class FirefighterPage {
     x -= 1;
     if (x < -width)
       x = width;
+    textSize(30);
+    textAlign(RIGHT);
+    text("a = play again", width-10, height-100);
   }
 }
