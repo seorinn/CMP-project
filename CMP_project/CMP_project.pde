@@ -33,7 +33,6 @@ void draw() {
       dp.goMedicineRoom();
     }
   } else if (fp != null) {
-    println(fp.playing, fp.pause, fp.missionFailed, fp.missionClear);
     if (fp.playing)
     fp.playing(fireGif);
     else if (fp.missionFailed)
