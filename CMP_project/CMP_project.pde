@@ -3,11 +3,14 @@ import gifAnimation.*;
 
 DoctorPage dp;
 FirefighterPage fp;
+PainterPage pp;
 
 Gif fireGif;
 SoundFile heartBeat;
 PImage backHome;
 boolean home = true;
+
+int ppPage = 0;
 
 void setup() {
   size(1080, 720);
@@ -43,8 +46,15 @@ void draw() {
     textAlign(RIGHT);
     text("h = home", width-10, height-50);
   }
-  //else if (pp != null) {
-  //} else if (cp != null) {
+  else if (pp != null) {
+    if(ppPage == 0){
+      pp.paintDraw();
+    }
+    else if (ppPage == 1){
+      pp.displayDraw();
+    }
+  }
+  //else if (cp != null) {
   //}
 }
 
@@ -69,8 +79,12 @@ void keyPressed() {
       fp.playing(fireGif);
       home = false;
     }
-    //else if (keyCode == UP) {
-    //} else if (keyCode == DOWN) {
+    else if (keyCode == UP) {
+      pp = new PainterPage();
+      pp.setPaint();
+      home = false;
+    }
+    //else if (keyCode == DOWN) {
     //}
   }
   if (dp!=null) {
@@ -138,9 +152,43 @@ void keyPressed() {
       fp = null;
     }
 
-    //else if(pp != null){}
-    //else if(cp != null){}
+    
   }
+  else if(pp != null){
+    if(ppPage == 0){
+      if (key == CODED){
+        if (keyCode == RIGHT){
+          pp.penIncre();
+        }
+        else if (keyCode == LEFT){
+          pp.penDecre();
+        }
+        else if (keyCode == UP){
+          pp.penColorUp();
+        }
+        else if (keyCode == DOWN){
+          pp.penColorDown();
+        }
+      }
+      else if(key == 'n'|| key == 'N'){
+        pp.newPaint();
+      }
+      else if (key == 's' || key == 'S'){
+        pp.saveImage();
+      }
+    }
+    if (key == 'd' || key == 'D'){
+      if(ppPage == 0){
+        ppPage = 1;
+        pp.paintToDis();
+      }
+      else{
+        ppPage = 0;
+        pp.disToPaint();
+      }
+     }
+  }
+  //else if(cp != null){}
 }
 
 void mousePressed() {
@@ -203,5 +251,19 @@ void mousePressed() {
 
     //else if(pp != null){}
     //else if(cp != null){}
+  }
+}
+
+void mouseDragged(){
+  if (pp != null){
+    if(ppPage == 0){
+      pp.drawLine();
+    }
+  }
+}
+
+void mouseReleased(){
+  if (pp != null){
+    pp.releaseMouse();
   }
 }
