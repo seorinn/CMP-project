@@ -151,9 +151,11 @@ void keyPressed() {
         fp.pause = true;
         fp.playing = false;
         image(fp.pauseImg, 0, 0);
+        fp.d = abs(fp.s-fp.e);
       } else {
         fp.pause = false;
         fp.playing = true;
+        fp.s = millis();
       }
     } else if (key == 'a' && (fp.missionFailed || fp.missionClear)) {
       fp = null;
