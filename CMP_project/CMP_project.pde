@@ -49,7 +49,7 @@ void draw() {
       fp.missionFailed();
     else if (fp.missionClear)
       fp.missionClear();
-    textSize(30);
+    textSize(25);
     textAlign(RIGHT);
     text("h = home", width-10, height-40);
   }
