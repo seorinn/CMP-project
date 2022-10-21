@@ -8,8 +8,8 @@ PainterPage pp;
 Gif fireGif;
 SoundFile heartBeat;
 PImage backHome;
-boolean home = true;
-
+boolean home = false;
+boolean helloPage = true;
 int ppPage = 0;
 
 void setup() {
@@ -17,15 +17,18 @@ void setup() {
   background(255);
   heartBeat = new SoundFile(this, "heartbeat.wav");
   backHome = loadImage("backHome.png");
-  home();
+  helloDCT();
 
   fireGif = new Gif(this, "fire.gif");
   fireGif.play();
 }
 
 void draw() {
-  frameRate(30);
-  if (dp != null) {
+  frameRate(60);
+  if(home){
+     home(); 
+  }
+  if (dp != null) {            //doctor
     if (dp.endo) {
       dp.endoscope();
     } else if (dp.xray) {
@@ -35,7 +38,7 @@ void draw() {
     } else if (dp.medicineRoom) {
       dp.goMedicineRoom();
     }
-  } else if (fp != null) {
+  } else if (fp != null) {      //firefighter
     if (fp.playing)
     fp.playing(fireGif);
     else if (fp.missionFailed)
@@ -46,11 +49,10 @@ void draw() {
     textAlign(RIGHT);
     text("h = home", width-10, height-50);
   }
-  else if (pp != null) {
+  else if (pp != null) {      //painter
     if(ppPage == 0){
       pp.paintDraw();
-    }
-    else if (ppPage == 1){
+    } else if (ppPage == 1){
       pp.displayDraw();
     }
   }
@@ -58,8 +60,7 @@ void draw() {
   //}
 }
 
-void home() {
-  home = true;
+void helloDCT(){
   image(backHome, 0, 0);
   textSize(100);
   fill(205, 205, 100);
@@ -67,8 +68,21 @@ void home() {
   text("dreams come true!", 160, 300);
 }
 
+void home() {
+  image(backHome, 0, 0);
+  textSize(100);
+  fill(205, 205, 100);
+  textAlign(BASELINE);
+  text("select Menu!", 160, 300);
+}
+
 void keyPressed() {
-  if (key == CODED && home) {
+  
+  if(helloPage){
+     home = true; 
+     helloPage = false;
+  }
+  if (home && key == CODED) {
     if (keyCode == RIGHT) {
       dp = new DoctorPage();
       dp.selectMenu();
@@ -114,7 +128,7 @@ void keyPressed() {
       dp.selectMenu();
     }
     if (dp.select_Menu && key == 'h') {
-      home();
+      home = true;
       dp = null;
     }
   } else if (fp != null) {
@@ -148,11 +162,9 @@ void keyPressed() {
       fp.playing(fireGif);
     }
     if (key == 'h') {
-      home();
+      home = true;
       fp = null;
     }
-
-    
   }
   else if(pp != null){
     if(ppPage == 0){
@@ -188,7 +200,8 @@ void keyPressed() {
       }
      }
     if (key == 'h') {
-      home();
+      imageMode(CORNER);
+      home = true;
       pp = null;
     }
   }
