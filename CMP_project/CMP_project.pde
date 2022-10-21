@@ -1,13 +1,17 @@
+import ddf.minim.*;
 import processing.sound.*;
 import gifAnimation.*;
 
 DoctorPage dp;
 FirefighterPage fp;
 PainterPage pp;
+CarPage cp;
 
 Gif fireGif;
 SoundFile heartBeat;
 SoundFile bgm;
+Minim minim= new Minim(this);
+AudioPlayer song, crash, boost, ghostsound, handling, beep;
 PImage mainImg;
 PImage homeImg;
 boolean home = false;
@@ -60,8 +64,9 @@ void draw() {
       pp.displayDraw();
     }
   }
-  //else if (cp != null) {
-  //}
+  else if (cp != null&&cp.over==false) { // car racer
+    cp.play();
+  }
 }
 
 void displayMain(){
@@ -98,8 +103,12 @@ void keyPressed() {
       bgm.pause();
       home = false;
     }
-    //else if (keyCode == DOWN) {
-    //}
+    else if (keyCode == DOWN) {
+      cp= new CarPage();
+      cp.set();//car page
+      bgm.pause();
+      home=false;
+    }
   }
   if (dp!=null) {
     if (dp.xrayRoom) {
@@ -210,7 +219,20 @@ void keyPressed() {
       pp = null;
     }
   }
-  //else if(cp != null){}
+  else if(cp != null){
+     if (cp.over&&key=='r') {
+      cp.reset();
+      cp.over=false;
+      loop();
+    }
+    if (key=='h') {
+      imageMode(CORNER);
+      song.pause();
+      home=true;
+      cp=null;
+      
+    }
+  }
 }
 
 void mousePressed() {
