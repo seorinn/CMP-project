@@ -69,7 +69,8 @@ class PainterPage{
     rect(880, 650, 50, 50);
     fill(0);
     text("S", 905, 685);
-
+    
+    rectMode(CORNER);
     text("Display", 920, 80);
     strokeWeight(5);
     stroke(0);
