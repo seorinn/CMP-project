@@ -7,6 +7,7 @@ PainterPage pp;
 
 Gif fireGif;
 SoundFile heartBeat;
+SoundFile bgm;
 PImage backHome;
 boolean home = false;
 boolean helloPage = true;
@@ -16,9 +17,10 @@ void setup() {
   size(1080, 720);
   background(255);
   heartBeat = new SoundFile(this, "heartbeat.wav");
+  bgm = new SoundFile(this,"Calimba - E's Jammy Jams.mp3");
   backHome = loadImage("backHome.png");
   helloDCT();
-
+  bgm.play();
   fireGif = new Gif(this, "fire.gif");
   fireGif.play();
 }
@@ -87,16 +89,19 @@ void keyPressed() {
       dp = new DoctorPage();
       dp.selectMenu();
       home = false;
+      bgm.pause();
     } else if (keyCode == LEFT) {
       fp = new FirefighterPage();
       fp.setFire();
       fp.playing(fireGif);
       home = false;
+      bgm.pause();
     }
     else if (keyCode == UP) {
       pp = new PainterPage();
       pp.setPaint();
       home = false;
+      bgm.pause();
     }
     //else if (keyCode == DOWN) {
     //}
@@ -129,6 +134,7 @@ void keyPressed() {
     }
     if (dp.select_Menu && key == 'h') {
       home = true;
+      bgm.play();
       dp = null;
     }
   } else if (fp != null) {
@@ -151,11 +157,9 @@ void keyPressed() {
         fp.pause = true;
         fp.playing = false;
         image(fp.pauseImg, 0, 0);
-        fp.d = abs(fp.s-fp.e);
       } else {
         fp.pause = false;
         fp.playing = true;
-        fp.s = millis();
       }
     } else if (key == 'a' && (fp.missionFailed || fp.missionClear)) {
       fp = null;
@@ -165,6 +169,7 @@ void keyPressed() {
     }
     if (key == 'h') {
       home = true;
+      bgm.play();
       fp = null;
     }
   }
@@ -204,6 +209,7 @@ void keyPressed() {
     if (key == 'h') {
       imageMode(CORNER);
       home = true;
+      bgm.play();
       pp = null;
     }
   }
