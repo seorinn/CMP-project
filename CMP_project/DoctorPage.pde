@@ -144,7 +144,7 @@ class DoctorPage {
        float distance = dist(mouseX,mouseY,310,220);
        distance = constrain(distance,0,200);
        float heartVolume = map(distance,0,200,1,0.1);
-       //heartBeat.amp(heartVolume);
+       heartBeat.amp(heartVolume);
        
       //draw heartRate
       stroke(255,0,0);
