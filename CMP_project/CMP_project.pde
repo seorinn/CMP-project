@@ -7,6 +7,7 @@ PainterPage pp;
 
 Gif fireGif;
 SoundFile heartBeat;
+SoundFile bgm;
 PImage mainImg;
 PImage homeImg;
 boolean home = false;
@@ -20,7 +21,7 @@ void setup() {
   mainImg = loadImage("mainBackground1.png");
   homeImg = loadImage("mainBackground2.png");
   displayMain();
-
+  bgm.play();
   fireGif = new Gif(this, "fire.gif");
   fireGif.play();
 }
@@ -81,16 +82,19 @@ void keyPressed() {
     if (keyCode == RIGHT) {
       dp = new DoctorPage();
       dp.selectMenu();
+      bgm.pause();
       home = false;
     } else if (keyCode == LEFT) {
       fp = new FirefighterPage();
       fp.setFire();
       fp.playing(fireGif);
+      bgm.pause();
       home = false;
     }
     else if (keyCode == UP) {
       pp = new PainterPage();
       pp.setPaint();
+      bgm.pause();
       home = false;
     }
     //else if (keyCode == DOWN) {
@@ -124,6 +128,7 @@ void keyPressed() {
     }
     if (dp.select_Menu && key == 'h') {
       home = true;
+      bgm.play();
       dp = null;
     }
   } else if (fp != null) {
@@ -160,6 +165,7 @@ void keyPressed() {
     }
     if (key == 'h') {
       home = true;
+      bgm.play();
       fp = null;
     }
   }
@@ -199,6 +205,7 @@ void keyPressed() {
     if (key == 'h') {
       imageMode(CORNER);
       home = true;
+      bgm.play();
       pp = null;
     }
   }
