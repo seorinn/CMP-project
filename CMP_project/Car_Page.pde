@@ -24,12 +24,6 @@ class CarPage {
   int enemyCount=0;
 
   CarPage() {
-   
-
-    
-    
-
-    
     over=false;
     startText = createFont("Arial", 45);
     endText = createFont("Arial", 30 );
