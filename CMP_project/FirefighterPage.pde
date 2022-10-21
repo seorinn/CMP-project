@@ -1,5 +1,3 @@
-//import gifAnimation.*;
-
 class FirefighterPage {
   PImage backgroundImg = loadImage("background2.jpeg");
   PImage msClearImg = loadImage("missionClear.jpg");
@@ -19,8 +17,11 @@ class FirefighterPage {
   float x = 0;
   float t = 0; //불 번짐 시간
   float time = 0; //경과 게임 시간
-  float playTime = 60; // 게임 시간
+  float playTime = 20; // 게임 시간
   int score = 500;
+  int s = millis();
+  int e;
+  int d = 0;
 
   boolean playing, pause, missionFailed, missionClear;
 
@@ -30,6 +31,7 @@ class FirefighterPage {
   }
 
   void playing(Gif img) {
+    e = millis();
     playing = true;
     image(backgroundImg, 0, 0);
 
@@ -44,7 +46,7 @@ class FirefighterPage {
       if (fires[i].power != 0 && fires[i].show)
         num ++; //꺼지지 않은 불 개수 세기
 
-    if (num != 0 && time > playTime) {
+    if (num != 0 && (abs(s-e)+d)/1000 > playTime) {
       playing = false;
       missionFailed();
     } else if (num == 0) {
@@ -79,8 +81,9 @@ class FirefighterPage {
     else if (floor == 3)
       image(mouseImg, mouseX-215/2, 50 + 150*floor-115/2, 215, 115);
 
-    textSize(30);
-    text("spacebar = pause", width-10, height-100);
+    textSize(25);
+    text("spacebar = pause", width-10, height-80);
+    text("w/s = up/down", width-10, height-120);
 
     fill(0);
     textSize(20);        //점수, 시간 등 표기
@@ -90,7 +93,7 @@ class FirefighterPage {
     textAlign(RIGHT);
     text("SCORE: " + score, width-10, 50);
     textAlign(LEFT);
-    text("TIME: " + nf((playTime - time), 0, 1), 10, 50);
+    text("TIME: " + nf((playTime - (abs(s-e)+d)/1000), 0, 1), 10, 50);
   }
 
   void missionFailed() {
@@ -102,9 +105,9 @@ class FirefighterPage {
     x -= 1;
     if (x < -width)
       x = width;
-    textSize(30);
+    textSize(25);
     textAlign(RIGHT);
-    text("a = play again", width-10, height-100);
+    text("a = play again", width-10, height-80);
   }
 
   void missionClear() {
@@ -119,8 +122,8 @@ class FirefighterPage {
     x -= 1;
     if (x < -width)
       x = width;
-    textSize(30);
+    textSize(25);
     textAlign(RIGHT);
-    text("a = play again", width-10, height-100);
+    text("a = play again", width-10, height-80);
   }
 }
