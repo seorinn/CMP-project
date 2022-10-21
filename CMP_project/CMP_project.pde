@@ -187,6 +187,10 @@ void keyPressed() {
         pp.disToPaint();
       }
      }
+    if (key == 'h') {
+      home();
+      pp = null;
+    }
   }
   //else if(cp != null){}
 }
