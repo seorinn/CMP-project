@@ -18,6 +18,7 @@ void setup() {
   size(1080, 720);
   background(255);
   heartBeat = new SoundFile(this, "heartbeat.wav");
+  bgm = new SoundFile(this,"Calimba - E's Jammy Jams.mp3");
   mainImg = loadImage("mainBackground1.png");
   homeImg = loadImage("mainBackground2.png");
   displayMain();
