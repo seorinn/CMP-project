@@ -1,5 +1,5 @@
 class FirefighterPage {
-  PImage backgroundImg = loadImage("background2.jpeg");
+  PImage backgroundImg = loadImage("backgroundF.jpeg");
   PImage msClearImg = loadImage("missionClear.jpg");
   PImage msFailedImg = loadImage("missionFailed.jpg");
   PImage firefighterImg = loadImage("firefighter.png");
