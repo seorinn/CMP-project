@@ -12,19 +12,21 @@ SoundFile heartBeat;
 SoundFile bgm;
 Minim minim= new Minim(this);
 AudioPlayer song, crash, boost, ghostsound, handling, beep;
-PImage mainImg;
-PImage homeImg;
-boolean home = false;
+PImage mainImg, homeImg, optionImg, creditImg;
+boolean home, option, credit;
 boolean mainPage = true;
 int ppPage = 0;
+float bgmvol = 1;
 
 void setup() {
   size(1080, 720);
   background(255);
   heartBeat = new SoundFile(this, "heartbeat.wav");
-  bgm = new SoundFile(this,"Calimba - E's Jammy Jams.mp3");
+  bgm = new SoundFile(this, "Calimba - E's Jammy Jams.mp3");
   mainImg = loadImage("mainBackground1.png");
   homeImg = loadImage("mainBackground2.png");
+  optionImg = loadImage("option.png");
+  creditImg = loadImage("credits.png");
   displayMain();
   bgm.play();
   fireGif = new Gif(this, "fire.gif");
@@ -33,9 +35,12 @@ void setup() {
 
 void draw() {
   frameRate(60);
-  if(home){
-     displayMenu(); 
-  }
+  if (home)
+    displayMenu();
+  if (option)
+    image(optionImg, 0, 0);
+  if (credit)
+    image(creditImg, 0, 0);
   if (dp != null) {            //doctor
     if (dp.endo) {
       dp.endoscope();
@@ -48,7 +53,7 @@ void draw() {
     }
   } else if (fp != null) {      //firefighter
     if (fp.playing)
-    fp.playing(fireGif);
+      fp.playing(fireGif);
     else if (fp.missionFailed)
       fp.missionFailed();
     else if (fp.missionClear)
@@ -56,34 +61,31 @@ void draw() {
     textSize(25);
     textAlign(RIGHT);
     text("h = home", width-10, height-40);
-  }
-  else if (pp != null) {      //painter
-    if(ppPage == 0){
+  } else if (pp != null) {      //painter
+    if (ppPage == 0) {
       pp.paintDraw();
-    } else if (ppPage == 1){
+    } else if (ppPage == 1) {
       pp.displayDraw();
     }
-  }
-  else if (cp != null&&cp.over==false) { // car racer
+  } else if (cp != null&&cp.over==false) { // car racer
     cp.play();
   }
 }
 
-void displayMain(){
+void displayMain() {
   image(mainImg, 0, 0);
 }
 
 void displayMenu() {
   mainPage = false;
   image(homeImg, 0, 0);
-  textAlign(BASELINE);  
+  textAlign(BASELINE);
   home = true;
 }
 
-void keyPressed() {  
-  if(mainPage){
-     displayMenu();
-  }
+void keyPressed() {
+  if (mainPage)
+    displayMenu();
   else if (home && key == CODED) {
     if (keyCode == RIGHT) {
       dp = new DoctorPage();
@@ -96,18 +98,40 @@ void keyPressed() {
       fp.playing(fireGif);
       bgm.pause();
       home = false;
-    }
-    else if (keyCode == UP) {
+    } else if (keyCode == UP) {
       pp = new PainterPage();
       pp.setPaint();
       bgm.pause();
       home = false;
-    }
-    else if (keyCode == DOWN) {
+    } else if (keyCode == DOWN) {
       cp= new CarPage();
       cp.set();//car page
       bgm.pause();
       home=false;
+    }
+  }
+  if (home && key == 'o') {
+    if (option)
+      option = false;
+    else
+      option = true;
+  }
+  if (option) {
+    if (key=='1') {
+      bgmvol-=0.1;
+      bgmvol = constrain(bgmvol, 0.1, 0.9);
+      bgm.amp(bgmvol);
+    } else if (key=='2') {
+      bgmvol+=0.1;
+      bgmvol = constrain(bgmvol, 0.1, 0.9);
+      bgm.amp(bgmvol);
+    } else if (key == 'q')
+      exit();
+    else if (key == 'c') {
+      if (credit)
+        credit = false;
+      else
+        credit = true;
     }
   }
   if (dp!=null) {
@@ -178,49 +202,41 @@ void keyPressed() {
       bgm.play();
       fp = null;
     }
-  }
-  else if(pp != null){
-    if(ppPage == 0){
-      if (key == CODED){
-        if (keyCode == RIGHT){
+  } else if (pp != null) {
+    if (ppPage == 0) {
+      if (key == CODED) {
+        if (keyCode == RIGHT) {
           pp.penIncre();
-        }
-        else if (keyCode == LEFT){
+        } else if (keyCode == LEFT) {
           pp.penDecre();
-        }
-        else if (keyCode == UP){
+        } else if (keyCode == UP) {
           pp.penColorUp();
-        }
-        else if (keyCode == DOWN){
+        } else if (keyCode == DOWN) {
           pp.penColorDown();
         }
-      }
-      else if(key == 'n'|| key == 'N'){
+      } else if (key == 'n'|| key == 'N') {
         pp.newPaint();
-      }
-      else if (key == 's' || key == 'S'){
+      } else if (key == 's' || key == 'S') {
         pp.saveImage();
       }
     }
-    if (key == 'd' || key == 'D'){
-      if(ppPage == 0){
+    if (key == 'd' || key == 'D') {
+      if (ppPage == 0) {
         ppPage = 1;
         pp.paintToDis();
-      }
-      else{
+      } else {
         ppPage = 0;
         pp.disToPaint();
       }
-     }
+    }
     if (key == 'h') {
       imageMode(CORNER);
       home = true;
       bgm.play();
       pp = null;
     }
-  }
-  else if(cp != null){
-     if (cp.over&&key=='r') {
+  } else if (cp != null) {
+    if (cp.over&&key=='r') {
       cp.reset();
       cp.over=false;
       loop();
@@ -231,7 +247,6 @@ void keyPressed() {
       bgm.play();
       home=true;
       cp=null;
-      
     }
   }
 }
@@ -299,16 +314,16 @@ void mousePressed() {
   }
 }
 
-void mouseDragged(){
-  if (pp != null){
-    if(ppPage == 0){
+void mouseDragged() {
+  if (pp != null) {
+    if (ppPage == 0) {
       pp.drawLine();
     }
   }
 }
 
-void mouseReleased(){
-  if (pp != null){
+void mouseReleased() {
+  if (pp != null) {
     pp.releaseMouse();
   }
 }
