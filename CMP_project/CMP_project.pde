@@ -228,6 +228,7 @@ void keyPressed() {
     if (key=='h') {
       imageMode(CORNER);
       song.pause();
+      bgm.play();
       home=true;
       cp=null;
       
