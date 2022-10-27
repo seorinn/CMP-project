@@ -80,6 +80,16 @@ class PainterPage{
     fill(0);
     text("D", 1005, 80);
 
+    text("Home", 920, 150);
+    strokeWeight(5);
+    stroke(0);
+    strokeJoin(ROUND);
+    fill(255);
+    rect(980, 115, 50, 50);
+    fill(0);
+    text("H", 1005, 150);
+
+
   }//paintDraw
 
   void displayDraw(){
