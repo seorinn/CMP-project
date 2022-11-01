@@ -27,7 +27,7 @@ class Fire {
   }
 
   void reposition(float x, float y, int p) {
-    posX = abs(x + int(random(-5, 5)) * 30);
+    posX = abs(x + int(random(-5, 5)) * 30); //reposition for spread near another fire
     posY = y + 0.75*(p - power);
   }
 
