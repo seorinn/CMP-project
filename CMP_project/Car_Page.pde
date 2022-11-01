@@ -1,8 +1,8 @@
 class CarPage {
   
-  boolean over=false;
-  boolean ghostMode=false;
-  int ghostv=0;
+  boolean over=false;             // check gamevoer
+  boolean ghostMode=false;        // control ghostmode 
+  int ghostv=0;                  // ghostmode speed
   PImage tree;
   PImage roadP;
   PImage myCar;
@@ -23,7 +23,7 @@ class CarPage {
   int savedTime;
   int enemyCount=0;
 
-  CarPage() {
+  CarPage() {                // CarPage setup1 
     over=false;
     startText = createFont("Arial", 45);
     endText = createFont("Arial", 30 );
@@ -38,11 +38,11 @@ class CarPage {
     item2=loadImage("item2.png");
     item3=loadImage("item3.png");
   }
-  void set() {
+  void set() {                 // CarPage setup2
     
     song=minim.loadFile("countdown.mp3");
     crash=minim.loadFile("crash.mp3");
-    song.play();
+    song.play();          // countdown
     setTrees.add(new Trees(tree, width/2-420, 125));
     setTrees.add(new Trees(tree, width/2-420, 375));
     setTrees.add(new Trees(tree, width/2-420, 605));
@@ -54,26 +54,26 @@ class CarPage {
     setTrees.add(new Trees(roadP, width/2, 425));
     setTrees.add(new Trees(roadP, width/2, 725));
 
-    if(cars.size()<1) cars.add(new Car(myCar, width/2, height/2+140, 0.03));
+    if(cars.size()<1) cars.add(new Car(myCar, width/2, height/2+140, 0.03)); // player car
     
-    savedTime=millis();
+    savedTime=millis();          // count times
    }
 
 
-  void play() {
+  void play() {             //drawup
     background(0, 255, 0);
     noStroke();
     fill(100);
-    rect(width/2, height/2, 680, height);
+    rect(width/2, height/2, 680, height);           // road
 
 
     for (int i=0; i<setTrees.size(); i++) {
       setTrees.get(i).imageTree();
       if (startCount>=3)
-        setTrees.get(i).y+=treeSpeed;
+        setTrees.get(i).y+=treeSpeed;           // move settrees according to speed
     }
 
-    textFont(startText, 45);
+    textFont(startText, 45);            // countdown text
     textAlign(CENTER);
 
     rectMode(CENTER);
@@ -82,26 +82,22 @@ class CarPage {
     for (int i=0; i<trees.size(); i++) {
       if (trees.get(i).y<=height+75) {
         trees.get(i).y+=treeSpeed;
-        trees.get(i).imageTree();
-      } else {
-        //trees.remove(i);// tree control
+        trees.get(i).imageTree();                // move trees according to speed
       }
     }
 
     for (int i=0; i<roadPattern.size(); i++) {
       if (roadPattern.get(i).y<height+75) {
         roadPattern.get(i).imageTree();
-        roadPattern.get(i).y+=treeSpeed;
-      } else {
-        //roadPattern.remove(i); // pattern control
-      }
+        roadPattern.get(i).y+=treeSpeed;            // move roadpattern according to speed
+      } 
     }
 
-    if(cars.size()>0) cars.get(0).imageCar();
+    if(cars.size()>0) cars.get(0).imageCar();        //image car
 
     int passedTime = millis()-savedTime;
     fill(0);
-    if (startCount==0) text(startMessage[0], width/2, height/2);
+    if (startCount==0) text(startMessage[0], width/2, height/2); 
     if (startCount==1) text(startMessage[1], width/2, height/2);
     if (startCount==2) text(startMessage[2], width/2, height/2);
     if (startCount==3) {
@@ -110,7 +106,7 @@ class CarPage {
         startCount=4;
       }
     }
-
+    // countdown at 1-second intervals
     if (startCount==0&&passedTime>=1000&&passedTime<2000) {
       startCount=1;
     }
@@ -122,15 +118,15 @@ class CarPage {
       savedTime=millis();
     }
 
-    if (startCount>=3) {
-      if (passedTime>=5000/treeSpeed) {                       // pass time
+    if (startCount>=3) {                    //start the racing
+      if (passedTime>=5000/treeSpeed) {                       // check the passing time and generate trees
         trees.add(new Trees(tree, width/2-420, -150));
         trees.add(new Trees(tree, width/2+420, -150));
         roadPattern.add(new Trees(roadP, width/2, -150));
         savedTime=millis();
         enemyCount++;
       }
-      cars.get(0).x=lerp(cars.get(0).x, mouseX, cars.get(0).speed);
+      cars.get(0).x=lerp(cars.get(0).x, mouseX, cars.get(0).speed);        // car control
       cars.get(0).x = constrain(cars.get(0).x, 230, 850);
       if (over==true) {                 //collision processing
 
@@ -138,13 +134,13 @@ class CarPage {
       }
     }
 
-    if (enemyCount>5) { // score?
+    if (enemyCount>5) { // scoring by enemy counts
       if (enemyCount<10) text("Avoid cars!", width/2, height/2);
       if (enemyCount>=30&&enemyCount<35) text("Get an item!", width/2, height/2);
       if (enemyCount%5==0) {                 // generate ecar
-        float ex = random(230, 850);
+        float ex = random(230, 850);          // ecar position
         int cs = (int)random(0, 3);
-        if (cs==0) {
+        if (cs==0) {                       // generate 3 cars randomly
           enemyCount++;
           beep=minim.loadFile("car_beep.mp3");
           beep.play();
@@ -161,18 +157,18 @@ class CarPage {
           ecars.add(new EnemyCar(ecar3, ex, -70, random(8+treeSpeed/5, 12+treeSpeed/5)) );
         }
       }
-      for (int i=0; i<ecars.size(); i++) {         //ecar Move
+      for (int i=0; i<ecars.size(); i++) {         //ecar movement
         ecars.get(i).y+=ecars.get(i).speed;
         ecars.get(i).imageCar();
 
 
-        if (ecars.get(i).eImage==ecar3) {
+        if (ecars.get(i).eImage==ecar3) {        // greencar movement 
 
           ecars.get(i).x+=map(sin(theta), -1, 1, -5, 5);
           ecars.get(i).x=constrain(ecars.get(i).x, 230, 850);
         }
       }
-      if (enemyCount%31==0) {
+      if (enemyCount%31==0) {               // generate items
         float ex = random(230, 850);
         int m=(int)random(0, 3);
         enemyCount++;
@@ -180,11 +176,11 @@ class CarPage {
         else if (m==1) items.add(new Item(item2, ex, -75, 6));
         else if (m==2) items.add(new Item(item3, ex, -75, 7));
       }
-      if (enemyCount%21==0) {
+      if (enemyCount%21==0) {                           // speed up every 2100 score
         treeSpeed+=1;
         enemyCount++;
       }
-      for (int i=0; i<items.size(); i++) {
+      for (int i=0; i<items.size(); i++) {                // item movement
         items.get(i).y+=items.get(i).speed;
         items.get(i).imageItem();
       }
@@ -231,8 +227,8 @@ class CarPage {
         items.remove(i);
       }
     }
-    text("Score: "+enemyCount*100, width-150, 50);
-    if (over==true) {
+    text("Score: "+enemyCount*100, width-150, 50);       // display score
+    if (over==true) {                                   // gameover
       fill(200);
       rect(width/2, height/2, 400, 250);
       fill(0);
@@ -245,8 +241,8 @@ class CarPage {
     textFont(startText,30);
     text("Key h: Home", 100, 30);
     theta+=0.05;
-    if (ghostMode==true) {
-      ghostv=millis();
+    if (ghostMode==true) {            // ghostmode processing
+      ghostv=millis();              // counting ghosttime
       treeSpeed+=10;
       ghostMode=false;
     }
@@ -255,14 +251,14 @@ class CarPage {
       if (gp<=4500) {
         cars.get(0).carImage=item3;
       } else {
-        treeSpeed-=10;
+        treeSpeed-=10;           // termminate ghostmode
         cars.get(0).carImage=myCar;
         ghostv=0;
       }
     }
   }
 
-  void reset() {
+  void reset() {                       // reset function: reset all components
     for (int i=setTrees.size()-1; i>-1; i--) setTrees.remove(i);
     for (int i=trees.size()-1; i>-1; i--) trees.remove(i);
     for (int i=ecars.size()-1; i>-1; i--) ecars.remove(i);
