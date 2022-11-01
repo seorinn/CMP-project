@@ -293,12 +293,12 @@ void mousePressed() {
     }
   } else if (fp != null && fp.playing) {
     for (int i = 0; i < fp.fires.length; i++) {
-      if (fp.mouseImg == fp.firefighterImg) { //불 끄기 - 소방관
+      if (fp.mouseImg == fp.firefighterImg) {     //put out the fire - firefighter
         if (abs(fp.fires[i].posX - mouseX) < fp.fires[i].power && abs(fp.fires[i].posY - (50 + 150*fp.floor)) < fp.fires[i].power) {
           fp.fires[i].hit();
           fp.score += 50;
         }
-      } else { //불 끄기 - 소방차
+      } else {      //put out the fire - fire truck
         rectMode(CENTER);
         noStroke();
         fill(135, 206, 235);
@@ -316,6 +316,7 @@ void mousePressed() {
 }
 
 void mouseDragged() {
+  //turning over the displayed picture
   if (pp != null) {
     if (ppPage == 0) {
       pp.drawLine();
