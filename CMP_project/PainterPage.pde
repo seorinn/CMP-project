@@ -5,18 +5,18 @@ class PainterPage{
   PImage displayImg;
   PFont f = createFont("Arial", 16);
 
-  float weight = 5; //펜 두께
-  int paintNum = 1; //명화 번호(n 누를때마다 바뀌도록 )
-  boolean paintIs = false; //명화 떠있는지(그리기 기능 활성화 여부 )
+  float weight = 5; //pen thickness
+  int paintNum = 1; //masterpiece number(change everytime 'n' is pressed)
+  boolean paintIs = false; //drawing function status
 
-  int mypaintNum = 1; //내 그림 저장 번호
+  int mypaintNum = 1; /saved picture number
   boolean mouseHold = false;
-  float mypaintXpos; //전시페이지에서 마우스로 좌우 이동하기 위한 x좌표
+  float mypaintXpos; //for moving left and right to the mouse on the display image
 
-  color[] colors= new color[9]; //펜 색
+  color[] colors= new color[9]; //pen color
 
-  color curColor; //선택한 현재 펜의 색
-  int colNum = 0; //색의 번호
+  color curColor; //current pen color
+  int colNum = 0; //color number
 
 
   void setPaint(){
@@ -43,7 +43,8 @@ class PainterPage{
 
     textFont(f, 30);
     text("Press 'n' to draw new painting.", width/2, 108);
-
+    
+    //pen thiceness change description
     text("Size", 150, 685);
     strokeWeight(4);
     stroke(0);
@@ -52,6 +53,7 @@ class PainterPage{
     strokeWeight(weight);
     line(240, 675, 270, 675);
 
+    //pen color change description
     text("Color", 500, 685);
     strokeWeight(4);
     stroke(0);
@@ -61,6 +63,7 @@ class PainterPage{
     triangle(610, 679.5, 620, 697.5, 630, 679.5);
     triangle(610, 670.5, 620, 652.5, 630, 670.5);
 
+    //button 'S' to save
     text("Save", 820, 685);
     strokeWeight(5);
     stroke(0);
@@ -70,6 +73,7 @@ class PainterPage{
     fill(0);
     text("S", 905, 685);
     
+    //button 'D' to display screen
     rectMode(CORNER);
     text("Display", 920, 80);
     strokeWeight(5);
@@ -80,6 +84,7 @@ class PainterPage{
     fill(0);
     text("D", 1005, 80);
 
+    //button 'H' to home
     text("Home", 920, 150);
     strokeWeight(5);
     stroke(0);
@@ -92,11 +97,12 @@ class PainterPage{
 
   }//paintDraw
 
+  //moving left and right to the mouse on the display image
   void displayDraw(){
     if(mousePressed == true){
       mouseHold = true;
     }
-    if(mouseHold == true){
+    if(mouseHold == true){ 
       imageMode(CENTER);
       float move = pmouseX-mouseX;
       background(backImg);
@@ -122,6 +128,7 @@ class PainterPage{
     mouseHold = false;
   }
 
+  //drawing
   void drawLine(){
     if (paintIs == true){
       if (mouseX > width/2 && mouseX < (width + img.width)/2 && mouseY > (height-img.height)/2 && mouseY < (height-img.height)/2 + img.height ){
@@ -132,10 +139,12 @@ class PainterPage{
     }
   }
 
+  //increase pen thickness
   void penIncre(){
     if(weight < 30) weight ++;
   }
 
+  //decrease pen thickness
   void penDecre(){
     strokeWeight(weight+2);
     stroke(210, 210, 210);
@@ -143,16 +152,19 @@ class PainterPage{
     if(weight > 1) weight --;
   }
 
+  //change pen color
   void penColorUp(){
     if(colNum == 8) colNum = 0;
     else colNum++;
   }
 
+  //change pen color
   void penColorDown(){
     if(colNum == 0) colNum = 8;
     else colNum--;
   }
 
+  //change masterPiece
   void newPaint(){
     background(backImg);
 
@@ -174,12 +186,14 @@ class PainterPage{
     paintIs = true;
   }
 
+  //save drawing
   void saveImage() {
     PImage saveImg = createImage(img.width, img.height, RGB);
 
     loadPixels();
     saveImg.loadPixels();
-
+    
+    //save only painted area 
     int index = 0;
     for (int y = 0; y < height; y++ ) {
       for (int x = 0; x < width; x++ ) {
@@ -198,17 +212,20 @@ class PainterPage{
     mypaintNum++;
   }
 
+  //from paint screen to display screen
   void paintToDis(){
     mypaintXpos = width/2;
     background(backImg);
     listPaint(mypaintXpos);
   }
 
+  //from display screen to paint screen
   void disToPaint(){
     background(backImg);
     paintIs = false;
   }
 
+  //moving left and right to the mouse on the display image
   void listPaint(float xpos){
     imageMode(CENTER);
     for (int i = 1; i < mypaintNum; i++){
