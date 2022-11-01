@@ -225,7 +225,7 @@ class PainterPage{
     paintIs = false;
   }
 
-  //moving left and right to the mouse on the display image
+  //list saved drawings at regular intervals
   void listPaint(float xpos){
     imageMode(CENTER);
     for (int i = 1; i < mypaintNum; i++){
