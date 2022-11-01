@@ -137,7 +137,7 @@ void keyPressed() {
         credit = true;
     }
   }
-  if (dp!=null) {
+  if (dp!=null) {    //doctor part
     if (dp.xrayRoom) {
       if (key == 'a') {   //endoscope mode
         dp.endo = true;
@@ -169,18 +169,18 @@ void keyPressed() {
       bgm.play();
       dp = null;
     }
-  } else if (fp != null) {
-    if (key == 'e' && (fp.floor == 3 || fp.missionFailed || fp.missionClear)) { //소방관 <-> 소방차
+  } else if (fp != null) {  //firefighter part
+    if (key == 'e' && (fp.floor == 3 || fp.missionFailed || fp.missionClear)) { //firefighter <-> fire truck
       if (fp.mouseImg == fp.firefighterImg)
         fp.mouseImg = fp.fireEngineImg;
       else
         fp.mouseImg = fp.firefighterImg;
     }
-    if (key=='w' && fp.playing && fp.mouseImg == fp.firefighterImg) { //위층 이동(소방관)
+    if (key=='w' && fp.playing && fp.mouseImg == fp.firefighterImg) { //go upstair
       if (fp.floor > 1)
         fp.floor -= 1;
     }
-    if (key=='s' && fp.playing && fp.mouseImg == fp.firefighterImg) { //아래층 이동(소방관)
+    if (key=='s' && fp.playing && fp.mouseImg == fp.firefighterImg) { //go downstair
       if (fp.floor < 3)
         fp.floor += 1;
     }
@@ -201,13 +201,13 @@ void keyPressed() {
       fp.setFire();
       fp.playing(fireGif);
     }
-    if (key == 'h') {
+    if (key == 'h') {    //home key
       home = true;
       bgm.play();
       fp = null;
     }
-  } else if (pp != null) {
-    if (ppPage == 0) {
+  } else if (pp != null) {  //painter part
+    if (ppPage == 0) {    //change pen color, thickness
       if (key == CODED) {
         if (keyCode == RIGHT) {
           pp.penIncre();
@@ -218,13 +218,13 @@ void keyPressed() {
         } else if (keyCode == DOWN) {
           pp.penColorDown();
         }
-      } else if (key == 'n'|| key == 'N') {
+      } else if (key == 'n'|| key == 'N') {    //Import pictures
         pp.newPaint();
-      } else if (key == 's' || key == 'S') {
+      } else if (key == 's' || key == 'S') {    //save pictures
         pp.saveImage();
       }
     }
-    if (key == 'd' || key == 'D') {
+    if (key == 'd' || key == 'D') {    //display pictures
       if (ppPage == 0) {
         ppPage = 1;
         pp.paintToDis();
@@ -233,19 +233,19 @@ void keyPressed() {
         pp.disToPaint();
       }
     }
-    if (key == 'h') {
+    if (key == 'h') {  //home key
       imageMode(CORNER);
       home = true;
       bgm.play();
       pp = null;
     }
-  } else if (cp != null) {
+  } else if (cp != null) {    //car racer part
     if (cp.over&&key=='r') {
       cp.reset();
       cp.over=false;
       loop();
     }
-    if (key=='h') {
+    if (key=='h') {    //home key
       imageMode(CORNER);
       song.pause();
       bgm.play();
