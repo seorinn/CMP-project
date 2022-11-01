@@ -9,7 +9,7 @@ class PainterPage{
   int paintNum = 1; //masterpiece number(change everytime 'n' is pressed)
   boolean paintIs = false; //drawing function status
 
-  int mypaintNum = 1; /saved picture number
+  int mypaintNum = 1; //saved picture number
   boolean mouseHold = false;
   float mypaintXpos; //for moving left and right to the mouse on the display image
 
