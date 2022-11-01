@@ -72,10 +72,12 @@ void draw() {
   }
 }
 
+//main window
 void displayMain() {
   image(mainImg, 0, 0);
 }
 
+//menu window that select job
 void displayMenu() {
   mainPage = false;
   image(homeImg, 0, 0);
@@ -84,39 +86,40 @@ void displayMenu() {
 }
 
 void keyPressed() {
-  if (mainPage)
+  if (mainPage)        //press any key to start application
     displayMenu();
   else if (home && key == CODED) {
-    if (keyCode == RIGHT) {
+    if (keyCode == RIGHT) {    //create doctor object
       dp = new DoctorPage();
       dp.selectMenu();
       bgm.pause();
       home = false;
-    } else if (keyCode == LEFT) {
+    } else if (keyCode == LEFT) {    //create firefighter object
       fp = new FirefighterPage();
       fp.setFire();
       fp.playing(fireGif);
       bgm.pause();
       home = false;
-    } else if (keyCode == UP) {
+    } else if (keyCode == UP) {    //create painter object
       pp = new PainterPage();
       pp.setPaint();
       bgm.pause();
       home = false;
-    } else if (keyCode == DOWN) {
+    } else if (keyCode == DOWN) {  //create car racer object
       cp= new CarPage();
       cp.set();//car page
       bgm.pause();
       home=false;
     }
   }
-  if (home && key == 'o') {
+  if (home && key == 'o') {    //option key
     if (option)
       option = false;
     else
       option = true;
   }
   if (option) {
+    //change volume
     if (key=='1') {
       bgmvol-=0.1;
       bgmvol = constrain(bgmvol, 0.1, 0.9);
@@ -125,9 +128,9 @@ void keyPressed() {
       bgmvol+=0.1;
       bgmvol = constrain(bgmvol, 0.1, 0.9);
       bgm.amp(bgmvol);
-    } else if (key == 'q')
+    } else if (key == 'q')    //exit application
       exit();
-    else if (key == 'c') {
+    else if (key == 'c') {    //show credit
       if (credit)
         credit = false;
       else
@@ -136,14 +139,15 @@ void keyPressed() {
   }
   if (dp!=null) {
     if (dp.xrayRoom) {
-      if (key == 'a') {
+      if (key == 'a') {   //endoscope mode
         dp.endo = true;
         dp.xray = false;
-      } else if (key == 's') {
+      } else if (key == 's') {  //x-ray mode
         dp.xray = true;
         dp.endo = false;
       }
     }
+    //go menu key in doctor page
     if (key == 'm') {
       dp.endo = false;
       dp.xray = false;
@@ -160,7 +164,7 @@ void keyPressed() {
         heartBeat.pause();
       dp.selectMenu();
     }
-    if (dp.select_Menu && key == 'h') {
+    if (dp.select_Menu && key == 'h') {  //go to select job menu window
       home = true;
       bgm.play();
       dp = null;
@@ -253,7 +257,7 @@ void keyPressed() {
 
 void mousePressed() {
   if (dp != null) {
-    if (dp.select_Menu) {
+    if (dp.select_Menu) {  //menu select with mouse click in doctor page
       if (dist(mouseX, mouseY, 157, 624) <= 85) {
         dp.xrayRoom = true;
         dp.goXrayRoom();
@@ -263,7 +267,7 @@ void mousePressed() {
       } else if (dist(mouseX, mouseY, 617, 624) <= 80)
         dp.medicineRoom = true;
     }
-    if (dp.medicineRoom) {
+    if (dp.medicineRoom) {    //check items for prescription
       if (dist(mouseX, mouseY, 455, 345) <= 10)
         dp.cough = true;
       if (dist(mouseX, mouseY, 530, 345) <= 10)
@@ -308,9 +312,6 @@ void mousePressed() {
     frameRate(10);
     image(fp.waterImg, mouseX - 215/2, 50 + 150*fp.floor - 115/2, 215, 115);
     image(fp.mouseImg, mouseX - 215/2, 50 + 150*fp.floor -115/2, 215, 115);
-
-    //else if(pp != null){}
-    //else if(cp != null){}
   }
 }
 
